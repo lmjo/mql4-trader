@@ -1,48 +1,58 @@
+input double TakeProfit     = 20;
+input double Lots           = 0.01;
+input double TrailingStop   = 30;
+input double MACDOpenLevel  = 3;
+input double MACDCloseLevel = 2;
+
+input int    MATrendPeriod  =26;
+
+
+
 //+------------------------------------------------------------------+
-//|                                                         test.mq4 |
-//|                        Copyright 2019, MetaQuotes Software Corp. |
-//|                                             https://www.mql5.com |
-//+------------------------------------------------------------------+
-#property copyright "Copyright 2019, MetaQuotes Software Corp."
-#property link      "https://www.mql5.com"
-#property version   "1.00"
-#property strict
-//+------------------------------------------------------------------+
-//| Expert initialization function                                   |
+//|                                                                  |
 //+------------------------------------------------------------------+
 int OnInit()
-  {
-//--- create timer
-   EventSetTimer(1);
-   
-//---
-   return(INIT_SUCCEEDED);
-  }
+{
+    EventSetTimer(1) ;
+    return(INIT_SUCCEEDED) ;
+}
+
+
+
 //+------------------------------------------------------------------+
-//| Expert deinitialization function                                 |
+//|                                                                  |
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
-  {
-//--- destroy timer
-   EventKillTimer();
-   
-  }
-//+------------------------------------------------------------------+
-//| Expert tick function                                             |
-//+------------------------------------------------------------------+
-void OnTick()
-  {
-//---
-   
-  }
-//+------------------------------------------------------------------+
-//| Timer function                                                   |
-//+------------------------------------------------------------------+
-void OnTimer()
-  {
-//---*
+{
 
-Comment(Point());
-   
-  }
+    EventKillTimer();
+
+}
+
+
+
 //+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void onTimer()
+  {
+   double MacdCurrent,MacdPrevious;
+   double SignalCurrent,SignalPrevious;
+   double MaCurrent,MaPrevious;
+   int    cnt,ticket,total;
+
+
+
+   MacdCurrent  = iMACD(NULL,0,12,26,9,PRICE_CLOSE,MODE_MAIN,0);
+   MacdPrevious = iMACD(NULL,0,12,26,9,PRICE_CLOSE,MODE_MAIN,1);
+
+   SignalCurrent =  iMACD(NULL,0,12,26,9,PRICE_CLOSE,MODE_SIGNAL,0);
+   SignalPrevious = iMACD(NULL,0,12,26,9,PRICE_CLOSE,MODE_SIGNAL,1);
+   
+   MaCurrent  = iMA(NULL,0,MATrendPeriod,0,MODE_EMA,PRICE_CLOSE,0);
+   MaPrevious = iMA(NULL,0,MATrendPeriod,0,MODE_EMA,PRICE_CLOSE,1);
+
+
+   Comment( MacdCurrent, " ", MacdPrevious ) ;
+
+  }
